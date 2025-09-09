@@ -1,0 +1,24 @@
+// bits/stdc++.h for macOS workaround
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <string>
+#include <map>
+#include <set>
+#include <queue>
+#include <stack>
+#include <deque>
+#include <bitset>
+#include <cassert>
+#include <climits>
+#include <utility>
+#include <functional>
+#include <numeric>
+#include <iomanip>
+#include <sstream>
+#include <unordered_map>
+#include <unordered_set>
