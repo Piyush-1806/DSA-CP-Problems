@@ -1,59 +1,49 @@
-// LeetCode Problem: Number of Longest Increasing Subsequences
-// Problem Link: https://leetcode.com/problems/number-of-longest-increasing-subsequences/
-// Approach: Dynamic Programming
-// Time Complexity: O(n^2)
-// Space Complexity: O(n)
+// Question - Number of Longest Increasing Subsequence
 
-class Solution {
-    public:
-        vector<int> dp, cnt;
-    
-        int rec(int i, vector<int>& nums){
-            //pruning
-            if(i < 0) return 0;
-            //cache check
-            if(dp[i] != -1) return dp[i];
-            //transition
-            int bestLen = 1;
-            int ways = 1; // at least one subsequence (the element itself)
-    
-            for(int j = i-1; j >= 0; j--){
-                if(nums[j] < nums[i]){
-                    int prevLen = rec(j, nums);
-                    if(prevLen + 1 > bestLen){
-                        bestLen = prevLen + 1;
-                        ways = cnt[j];  // reset ways to those of j
-                    }
-                    else if(prevLen + 1 == bestLen){
-                        ways += cnt[j]; // add more ways
-                    }
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void solve() {
+    int n;
+    cin >> n;
+    vector<int> nums(n);
+    for (int i = 0; i < n; i++) cin >> nums[i];
+
+    vector<int> dp(n, 1);   // dp[i] = LIS length ending at i
+    vector<int> cnt(n, 1);  // cnt[i] = number of LIS ending at i
+    int maxLen = 1;
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < i; j++) {
+            if (nums[j] < nums[i]) {
+                if (dp[j] + 1 > dp[i]) {
+                    dp[i] = dp[j] + 1;
+                    cnt[i] = cnt[j];      // reset count
+                }
+                else if (dp[j] + 1 == dp[i]) {
+                    cnt[i] += cnt[j];     // add more ways
                 }
             }
-            //save ad return
-            dp[i] = bestLen;
-            cnt[i] = ways;
-            return dp[i];
         }
-    
-        int findNumberOfLIS(vector<int>& nums) {
-            int n = nums.size();
-            dp = vector<int>(n, -1);
-            cnt = vector<int>(n, 0);
-    
-            int maxLen = 0;
-            int ans = 0;
-    
-            for(int i = 0; i < n; i++){
-                int length = rec(i, nums);
-                if(length > maxLen){
-                    maxLen = length;
-                    ans = cnt[i];  // reset count
-                }
-                else if(length == maxLen){
-                    ans += cnt[i]; // add more ways
-                }
-            }
-            return ans;
-        }
-    };
-    
+        maxLen = max(maxLen, dp[i]);
+    }
+
+    int ans = 0;
+    for (int i = 0; i < n; i++) {
+        if (dp[i] == maxLen) ans += cnt[i];
+    }
+
+    cout << ans << "\n";
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t;
+    cin >> t;
+    while (t--) solve();
+
+    return 0;
+}
